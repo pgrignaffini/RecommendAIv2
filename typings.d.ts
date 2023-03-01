@@ -44,4 +44,54 @@ declare module "typings" {
     content_type: string;
     runtime: string;
   };
+
+  type Recommendation = {
+    explanation: string;
+    streaming_data: Show;
+    title: string;
+  };
+
+  type Preference = {
+    title: string;
+    reason: string;
+  };
+
+  type TMDBShow = {
+    adult: false;
+    backdrop_path: string;
+    genre_ids: number[];
+    id: number;
+    original_language: string;
+    original_title: string;
+    original_name: string;
+    overview: string;
+    poster_path: string;
+    release_date: Date;
+    title: string;
+    name: string;
+    video: boolean;
+    vote_average: number;
+    vote_count: number;
+    popularity: number;
+  };
+
+  type TMDBResult = {
+    page: number;
+    results: TMDBShow[];
+    total_pages: number;
+    total_results: number;
+  };
+
+  type TMDBConfiguration = {
+    images: {
+      base_url: string;
+      secure_base_url: string;
+      backdrop_sizes: string[];
+      logo_sizes: string[];
+      poster_sizes: string[];
+      profile_sizes: string[];
+      still_sizes: string[];
+    };
+    change_keys: string[];
+  };
 }

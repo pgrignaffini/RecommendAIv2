@@ -6,6 +6,7 @@ import { ReactQueryDevtools } from "react-query/devtools";
 import { api } from "~/utils/api";
 
 import "~/styles/globals.css";
+import Header from "~/components/Header";
 
 const MyApp: AppType<{ session: Session | null }> = ({
   Component,
@@ -22,7 +23,10 @@ const MyApp: AppType<{ session: Session | null }> = ({
   return (
     <SessionProvider session={session}>
       <QueryClientProvider client={queryClient}>
-        <Component {...pageProps} />
+        <main className="relative flex min-h-screen flex-col bg-[#072942] pb-10">
+          <Header />
+          <Component {...pageProps} />
+        </main>
         <ReactQueryDevtools initialIsOpen={false} />
       </QueryClientProvider>
     </SessionProvider>

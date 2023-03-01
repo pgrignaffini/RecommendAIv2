@@ -1,21 +1,34 @@
 import React from "react";
-import type { Show } from "typings";
-import type { Dispatch, SetStateAction } from "react";
+import type { TMDBShow } from "typings";
+import { useConfig } from "~/hooks/useConfig";
+import { useLocalStorage } from "usehooks-ts";
 
 type Props = {
-  bannerShow: Show;
-  setPreferredShows: Dispatch<SetStateAction<Show[] | null>>;
+  bannerShow: TMDBShow;
 };
 
-function Banner({ bannerShow, setPreferredShows }: Props) {
-  const [added, setAdded] = React.useState(false);
+function Banner({ bannerShow }: Props) {
+  const [preferredShows, setPreferredShows] = useLocalStorage<TMDBShow[]>(
+    "shows",
+    []
+  );
+  const isAdded = preferredShows?.some((s) => s.id === bannerShow.id);
+  const [added, setAdded] = React.useState(isAdded);
+  const { config, baseUrl, backdropSizes, posterSizes } = useConfig();
+  const url = config
+    ? `${baseUrl}${backdropSizes[2] as string}${bannerShow?.backdrop_path}`
+    : "";
+
+  const posterUrl = config
+    ? `${baseUrl}${posterSizes[1] as string}${bannerShow?.poster_path}`
+    : "";
 
   return (
     <div
       style={{
         backgroundSize: "cover",
         backgroundPosition: "center center",
-        backgroundImage: `url("${bannerShow?.backdropURLs[1280]}")`,
+        backgroundImage: `url("${url}")`,
       }}
       className="relative h-[600px] w-full"
     >
@@ -44,12 +57,14 @@ function Banner({ bannerShow, setPreferredShows }: Props) {
           <button
             className="w-fit rounded-md border-2 bg-[#546E24] p-3 text-lg text-white"
             onClick={() => {
-              setPreferredShows((prev) => {
-                if (prev) {
-                  return prev.filter((s) => s.imdbID !== bannerShow.imdbID);
-                }
+              const newValue = preferredShows.filter(
+                (s) => s.id !== bannerShow.id
+              );
+              if (newValue.length === 0) {
                 return null;
-              });
+              } else {
+                setPreferredShows(newValue);
+              }
               setAdded(false);
             }}
           >
@@ -57,10 +72,7 @@ function Banner({ bannerShow, setPreferredShows }: Props) {
           </button>
         )}
       </div>
-      <img
-        className="absolute bottom-12 right-10 w-32"
-        src={bannerShow?.posterURLs[154]}
-      />
+      <img className="absolute bottom-12 right-10 w-32" src={posterUrl} />
     </div>
   );
 }

@@ -7,38 +7,35 @@ import { api } from "~/utils/api";
 import { defaultGenres, defaultServices } from "~/utils/constants";
 import { useState } from "react";
 import axios from "axios";
-import { useQuery } from "react-query";
-import type { Show } from "typings";
+import type { TMDBShow, TMDBResult } from "typings";
 import { getRandomInt } from "~/utils/helpers";
 import Banner from "~/components/Banner";
 import Row from "~/components/Row";
 import ShowCard from "~/components/ShowCard";
+import { useReadLocalStorage } from "usehooks-ts";
+import dynamic from "next/dynamic";
+
+// static import FAB to avoid SSR issues
+const FAB = dynamic(() => import("~/components/FAB"), { ssr: false });
 
 type Props = {
-  shows: Show[];
-  bannerShow: Show;
+  trendingShows: TMDBShow[];
+  topRatedShows: TMDBShow[];
+  popularShows: TMDBShow[];
+  bannerShow: TMDBShow;
 };
 
-const Home = ({ shows, bannerShow }: Props) => {
-  const [servicesFilter, setServicesFilter] =
-    useState<string[]>(defaultServices);
-  const [genresFilter, setGenresFilter] = useState<string[]>(defaultGenres);
-  const [preferredShows, setPreferredShows] = useState<Show[] | null>(null);
+const Home = ({
+  trendingShows,
+  topRatedShows,
+  popularShows,
+  bannerShow,
+}: Props) => {
+  // const [servicesFilter, setServicesFilter] =
+  //   useState<string[]>(defaultServices);
+  // const [genresFilter, setGenresFilter] = useState<string[]>(defaultGenres);
+  const preferredShows = useReadLocalStorage<TMDBShow[]>("shows");
   // const hello = api.example.hello.useQuery({ text: "from tRPC" });
-
-  console.log("shows", shows);
-
-  const fetchShows = async () => {
-    const res = await axios
-      .post("/api/shows", {
-        services: servicesFilter,
-        genres: genresFilter,
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-    return res?.data as Show[];
-  };
 
   return (
     <>
@@ -47,65 +44,32 @@ const Home = ({ shows, bannerShow }: Props) => {
         <meta name="description" content="Find your next favorite show" />
         <link rel="icon" href="/icon.png" />
       </Head>
-      <main className="relative flex min-h-screen flex-col bg-[#072942] pb-10">
-        <header className="flex items-center justify-between p-4">
-          <img src="/logo.png" alt="RecommendAI" className="h-10" />
-          <button className="rounded-lg border-2 py-2 px-4 text-lg text-white">
-            Sign in
-          </button>
-        </header>
-        <Banner bannerShow={bannerShow} setPreferredShows={setPreferredShows} />
+      <main>
+        <Banner bannerShow={bannerShow} />
         <div className="space-y-4">
-          <Row title="Trending Now">
-            {shows.map((show) => (
-              <ShowCard
-                key={show.imdbID}
-                show={show}
-                isLarge
-                setPreferredShows={setPreferredShows}
-              />
-            ))}
-          </Row>
-          <Row title="Action Movies">
-            {shows.map((show) => (
-              <ShowCard
-                key={show.imdbID}
-                show={show}
-                setPreferredShows={setPreferredShows}
-              />
-            ))}
-          </Row>
-          <Row title="Top Rated">
-            {shows.map((show) => (
-              <ShowCard
-                key={show.imdbID}
-                show={show}
-                setPreferredShows={setPreferredShows}
-              />
-            ))}
-          </Row>
+          {trendingShows && (
+            <Row title="Trending Now">
+              {trendingShows.map((show) => (
+                <ShowCard key={show.id} show={show} />
+              ))}
+            </Row>
+          )}
+          {topRatedShows && (
+            <Row title="Top Rated">
+              {topRatedShows.map((show) => (
+                <ShowCard key={show.id} show={show} />
+              ))}
+            </Row>
+          )}
+          {popularShows && (
+            <Row title="Popular">
+              {popularShows?.map((show) => (
+                <ShowCard key={show.id} show={show} />
+              ))}
+            </Row>
+          )}
         </div>
-        <button className="group sticky bottom-12 left-12 flex h-12 w-12 flex-col items-center justify-center rounded-full bg-red-500 p-4  transition duration-500 hover:scale-125">
-          <p className="text-xl text-white group-hover:hidden">
-            {preferredShows?.length ?? 0}
-          </p>
-          <i className="hidden text-xl text-white group-hover:block">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              strokeWidth={1.5}
-              stroke="currentColor"
-              className="h-6 w-6"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"
-              />
-            </svg>
-          </i>
-        </button>
+        <FAB shows={preferredShows as TMDBShow[]} />
       </main>
     </>
   );
@@ -115,19 +79,31 @@ export default Home;
 
 // get shows on server side
 export const getServerSideProps: GetServerSideProps = async () => {
-  const response = await axios.post(`${process.env.API_BASE_URL}/content/?`, {
-    timeout: 1000 * 60 * 10,
-    ...defaultGenres,
-    ...defaultServices,
-    headers: { accept: "application/json" },
-  });
+  const trending = await axios.get(
+    `${process.env.TMDB_API_URL}/trending/all/day?api_key=${process.env.API_KEY}`
+  );
 
-  const data = response.data as Show[];
+  const trendingShows = trending.data as TMDBResult;
+
+  const topRated = await axios.get(
+    `${process.env.TMDB_API_URL}/movie/top_rated?api_key=${process.env.API_KEY}`
+  );
+
+  const topRatedShows = topRated.data as TMDBResult;
+
+  const popular = await axios.get(
+    `${process.env.TMDB_API_URL}/movie/popular?api_key=${process.env.API_KEY}`
+  );
+
+  const popularShows = popular.data as TMDBResult;
 
   return {
     props: {
-      shows: data,
-      bannerShow: data[getRandomInt(0, data.length)],
+      trendingShows: trendingShows.results ?? [],
+      topRatedShows: topRatedShows.results ?? [],
+      popularShows: popularShows.results ?? [],
+      bannerShow:
+        trendingShows.results[getRandomInt(0, trendingShows.results.length)],
     },
   };
 };
