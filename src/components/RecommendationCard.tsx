@@ -7,7 +7,6 @@ type Props = {
 };
 
 function RecommendationCard({ show }: Props) {
-  console.log(show);
   return (
     <div
       key={show.streaming_data.imdbID}

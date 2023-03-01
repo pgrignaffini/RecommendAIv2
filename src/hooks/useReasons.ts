@@ -11,11 +11,11 @@ export const useReasons = (shows: TMDBShow[]) => {
 
   const {
     data: reasons,
-    isLoading,
+    isLoading: isLoadingReasons,
     isError,
   } = useQuery("reasons", () => fetchReasons(shows), {
     enabled: !!shows,
   });
 
-  return { reasons, isLoading, isError };
+  return { reasons, isLoadingReasons, isError };
 };

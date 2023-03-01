@@ -10,12 +10,12 @@ import { useRecommendations } from "~/hooks/useRecommendations";
 
 function Reasons() {
   const preferredShows = useReadLocalStorage<TMDBShow[]>("shows");
-  const { reasons } = useReasons(preferredShows as TMDBShow[]);
+  const { reasons, isLoadingReasons } = useReasons(
+    preferredShows as TMDBShow[]
+  );
   const [preferences, setPreferences] = React.useState<Preference[]>([]);
   const { recommendations, getRecommendations, isLoadingRecommendations } =
     useRecommendations(preferences);
-
-  console.log(preferences);
 
   return (
     <div className="flex flex-col space-y-8">
@@ -23,20 +23,26 @@ function Reasons() {
         {preferredShows?.map((show) => (
           <div key={show.id} className="flex flex-col space-y-4">
             <ShowCard show={show} isLarge />
-            <ChooseReasons
-              title={show.title ?? show.name}
-              reasons={reasons}
-              setPreferences={setPreferences}
-            />
+            {isLoadingReasons ? (
+              "Loading reasons..."
+            ) : (
+              <ChooseReasons
+                title={show.title ?? show.name}
+                reasons={reasons}
+                setPreferences={setPreferences}
+              />
+            )}
           </div>
         ))}
       </div>
-      <button
-        className="mx-auto w-fit rounded-full border-2 bg-[#072942] p-3 text-center text-lg text-white"
-        onClick={() => getRecommendations()}
-      >
-        Recommendations {isLoadingRecommendations && " loading..."}
-      </button>
+      {preferences?.length === preferredShows?.length && (
+        <button
+          className="mx-auto w-fit rounded-full border-2 bg-[#072942] p-3 text-center text-lg text-white"
+          onClick={() => getRecommendations()}
+        >
+          Recommendations {isLoadingRecommendations && " loading..."}
+        </button>
+      )}
       <div className="grid grid-cols-4 gap-4">
         {recommendations?.map((show: Show) => (
           <RecommendationCard key={show.imdbID} show={show} />

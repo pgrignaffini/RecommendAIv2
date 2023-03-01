@@ -19,9 +19,7 @@ function ChooseReasons({ title, reasons, setPreferences }: Props) {
         (reasons[title] as string[])?.map((reason, index) => (
           <button
             key={index}
-            className={`w-full rounded-md border-2 bg-slate-100 p-3 ${
-              selectedReason === reason ? "border-purple-500" : "border-black"
-            }}`}
+            className={`w-full rounded-md bg-slate-100 p-3`}
             onClick={() => {
               setSelectedReason(reason);
               setPreferences((prev) => {
@@ -41,6 +39,7 @@ function ChooseReasons({ title, reasons, setPreferences }: Props) {
             }}
           >
             {reason}
+            {selectedReason === reason && " ✔"}
           </button>
         ))}
     </>
