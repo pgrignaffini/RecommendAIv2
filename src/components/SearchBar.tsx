@@ -3,7 +3,6 @@ import { useSearch } from "~/hooks/useSearch";
 import type { TMDBShow } from "typings";
 import SearchRow from "~/components/SearchRow";
 import { useOnClickOutside } from "usehooks-ts";
-import { MagnifyingGlassCircleIcon } from "@heroicons/react/24/solid";
 
 export default function SearchBar({ placeholder }: { placeholder: string }) {
   const ref = useRef(null);

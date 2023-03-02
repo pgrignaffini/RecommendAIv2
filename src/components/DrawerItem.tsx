@@ -2,18 +2,15 @@
 import React from "react";
 import type { TMDBShow } from "typings";
 import { useLocalStorage } from "usehooks-ts";
-import { useConfig } from "~/hooks/useConfig";
-import { PlusCircleIcon } from "@heroicons/react/24/outline";
+import { MinusCircleIcon } from "@heroicons/react/24/outline";
+import { useShowImages } from "~/hooks/useShowImages";
 
 type Props = {
   show: TMDBShow;
 };
 
 function DrawerItem({ show }: Props) {
-  const { config, baseUrl, posterSizes } = useConfig();
-  const url = config
-    ? `${baseUrl}${posterSizes[1] as string}${show?.poster_path}`
-    : "";
+  const { smallPosterUrl } = useShowImages(show);
   const [preferredShows, setPreferredShows] = useLocalStorage<TMDBShow[]>(
     "shows",
     []
@@ -21,7 +18,7 @@ function DrawerItem({ show }: Props) {
 
   return (
     <div className="flex items-center justify-between">
-      <img src={url ?? "/blank.jpeg"} alt={show.title} className="h-12 w-8" />
+      <img src={smallPosterUrl} alt={show.title} className="h-12 w-8" />
       <p>{show.name ?? show.title}</p>
       <button
         onClick={() => {
@@ -33,7 +30,7 @@ function DrawerItem({ show }: Props) {
           }
         }}
       >
-        <PlusCircleIcon className="h-6 w-6" />
+        <MinusCircleIcon className="h-6 w-6" />
       </button>
     </div>
   );

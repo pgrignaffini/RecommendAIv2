@@ -1,7 +1,6 @@
 /* eslint-disable @next/next/no-img-element */
 import React from "react";
 import type { TMDBShow } from "typings";
-import { useConfig } from "~/hooks/useConfig";
 import { useLocalStorage, useBoolean } from "usehooks-ts";
 import { useShowImages } from "~/hooks/useShowImages";
 

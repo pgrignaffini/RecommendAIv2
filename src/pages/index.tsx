@@ -1,19 +1,18 @@
 /* eslint-disable @next/next/no-img-element */
 import type { GetServerSideProps } from "next";
 import Head from "next/head";
-import { signIn, signOut, useSession } from "next-auth/react";
-import { api } from "~/utils/api";
-import { defaultGenres, defaultServices } from "~/utils/constants";
+// import { signIn, signOut, useSession } from "next-auth/react";
+// import { api } from "~/utils/api";
 import axios from "axios";
 import type { TMDBShow, TMDBResult } from "typings";
 import { getRandomInt } from "~/utils/helpers";
-import Banner from "~/components/Banner";
 import Row from "~/components/Row";
 import ShowCard from "~/components/ShowCard";
 import dynamic from "next/dynamic";
 
-// static import FAB to avoid SSR issues
+// static import to avoid SSR issues due to usage of localStorage
 const Drawer = dynamic(() => import("~/components/Drawer"), { ssr: false });
+const Banner = dynamic(() => import("~/components/Banner"), { ssr: false });
 
 type Props = {
   trendingShows: TMDBShow[];
@@ -28,11 +27,6 @@ const Home = ({
   popularShows,
   bannerShow,
 }: Props) => {
-  // const [servicesFilter, setServicesFilter] =
-  //   useState<string[]>(defaultServices);
-  // const [genresFilter, setGenresFilter] = useState<string[]>(defaultGenres);
-  // const hello = api.example.hello.useQuery({ text: "from tRPC" });
-
   return (
     <>
       <Head>

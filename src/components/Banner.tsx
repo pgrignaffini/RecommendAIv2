@@ -1,7 +1,8 @@
+/* eslint-disable @next/next/no-img-element */
 import React from "react";
 import type { TMDBShow } from "typings";
-import { useConfig } from "~/hooks/useConfig";
 import { useLocalStorage } from "usehooks-ts";
+import { useShowImages } from "~/hooks/useShowImages";
 
 type Props = {
   bannerShow: TMDBShow;
@@ -14,21 +15,14 @@ function Banner({ bannerShow }: Props) {
   );
   const isAdded = preferredShows?.some((s) => s.id === bannerShow.id);
   const [added, setAdded] = React.useState(isAdded);
-  const { config, baseUrl, backdropSizes, posterSizes } = useConfig();
-  const url = config
-    ? `${baseUrl}${backdropSizes[2] as string}${bannerShow?.backdrop_path}`
-    : "";
-
-  const posterUrl = config
-    ? `${baseUrl}${posterSizes[1] as string}${bannerShow?.poster_path}`
-    : "";
+  const { largeBackdropUrl, largePosterUrl } = useShowImages(bannerShow);
 
   return (
     <div
       style={{
         backgroundSize: "cover",
         backgroundPosition: "center center",
-        backgroundImage: `url("${url}")`,
+        backgroundImage: `url("${largeBackdropUrl}")`,
       }}
       className="relative h-[600px] w-full"
     >
@@ -72,7 +66,11 @@ function Banner({ bannerShow }: Props) {
           </button>
         )}
       </div>
-      <img className="absolute bottom-12 right-10 w-32" src={posterUrl} />
+      <img
+        className="absolute bottom-12 right-10 w-32"
+        src={largePosterUrl}
+        alt={bannerShow.title}
+      />
     </div>
   );
 }

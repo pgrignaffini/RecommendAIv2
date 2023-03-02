@@ -3,7 +3,7 @@ import Link from "next/link";
 import React from "react";
 import type { TMDBShow } from "typings";
 import { useReadLocalStorage } from "usehooks-ts";
-import SearchBar from "./SearchBar";
+import SearchBar from "~/components/SearchBar";
 
 function Header() {
   const shows = useReadLocalStorage<TMDBShow[]>("shows");
