@@ -19,7 +19,7 @@ function DrawerItem({ show }: Props) {
   return (
     <div className="flex items-center justify-between">
       <img src={smallPosterUrl} alt={show.title} className="h-12 w-8" />
-      <p>{show.name ?? show.title}</p>
+      <p className="px-2">{show.name ?? show.title}</p>
       <button
         onClick={() => {
           const newValue = preferredShows.filter((s) => s.id !== show.id);

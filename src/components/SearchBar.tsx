@@ -13,41 +13,37 @@ export default function SearchBar({ placeholder }: { placeholder: string }) {
   useOnClickOutside(ref, () => setHide(true));
 
   return (
-    <>
-      <div className="flex-start relative inline-flex w-1/2 flex-col justify-center text-inherit">
-        <form
-          className="grid"
-          onSubmit={(e) => {
-            e.preventDefault();
-            search().catch(console.error);
-            setHide(false);
+    <div
+      ref={ref}
+      className="flex-start relative inline-flex w-1/2 flex-col justify-center text-inherit"
+    >
+      <form
+        className="grid"
+        onSubmit={(e) => {
+          e.preventDefault();
+          search().catch(console.error);
+          setHide(false);
+        }}
+      >
+        <input
+          type="text"
+          className="input placeholder:italic"
+          value={wordEntered}
+          placeholder={placeholder}
+          onChange={(e) => {
+            setWordEntered(e.target.value);
+            removeSearch();
           }}
-        >
-          <input
-            ref={ref}
-            type="text"
-            className="input placeholder:italic"
-            value={wordEntered}
-            placeholder={placeholder}
-            onChange={(e) => {
-              setWordEntered(e.target.value);
-              removeSearch();
-            }}
-          />
-          <button type="submit" className="hidden" />
-        </form>
-        {wordEntered && !hide && (
-          <ul className="absolute top-12 z-10 -mt-2 max-h-max w-full overflow-hidden overflow-y-auto rounded-b-md bg-base-100 shadow-xl scrollbar-hide">
-            {shows?.slice(0, 10).map((show: TMDBShow, index: number) => (
-              <SearchRow
-                key={index}
-                show={show}
-                setWordEntered={setWordEntered}
-              />
-            ))}
-          </ul>
-        )}
-      </div>
-    </>
+        />
+        <button type="submit" className="hidden" />
+      </form>
+      {wordEntered && !hide && (
+        <ul className="absolute top-12 z-10 -mt-2 max-h-max w-full overflow-hidden overflow-y-auto rounded-b-md bg-base-100 shadow-xl scrollbar-hide">
+          {shows?.slice(0, 10).map((show: TMDBShow) => (
+            <SearchRow key={show.id} show={show} />
+          ))}
+        </ul>
+      )}
+    </div>
   );
 }
