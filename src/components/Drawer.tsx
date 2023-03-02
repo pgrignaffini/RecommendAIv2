@@ -1,25 +1,18 @@
 import Link from "next/link";
 import React from "react";
 import type { TMDBShow } from "typings";
-import { useLocalStorage } from "usehooks-ts";
+import { useReadLocalStorage } from "usehooks-ts";
 import DrawerItem from "./DrawerItem";
 
 function Drawer() {
-  const [preferredShows, setPreferredShows] = useLocalStorage<TMDBShow[]>(
-    "shows",
-    []
-  );
+  const preferredShows = useReadLocalStorage<TMDBShow[]>("shows");
   return (
     <div className="drawer-side">
       <label htmlFor="my-drawer-4" className="drawer-overlay"></label>
       <ul className="w-80 space-y-8 bg-base-100 p-4 text-base-content">
         {preferredShows?.map((show) => (
           <li key={show.id}>
-            <DrawerItem
-              show={show}
-              preferredShows={preferredShows}
-              setPreferredShows={setPreferredShows}
-            />
+            <DrawerItem show={show} />
           </li>
         ))}
         <li className="btn w-full">

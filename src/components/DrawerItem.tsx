@@ -1,19 +1,23 @@
 /* eslint-disable @next/next/no-img-element */
 import React from "react";
 import type { TMDBShow } from "typings";
+import { useLocalStorage } from "usehooks-ts";
 import { useConfig } from "~/hooks/useConfig";
 
 type Props = {
   show: TMDBShow;
-  preferredShows: TMDBShow[];
-  setPreferredShows: React.Dispatch<React.SetStateAction<TMDBShow[]>>;
 };
 
-function DrawerItem({ show, preferredShows, setPreferredShows }: Props) {
+function DrawerItem({ show }: Props) {
   const { config, baseUrl, posterSizes } = useConfig();
   const url = config
     ? `${baseUrl}${posterSizes[1] as string}${show?.poster_path}`
     : "";
+  const [preferredShows, setPreferredShows] = useLocalStorage<TMDBShow[]>(
+    "shows",
+    []
+  );
+
   return (
     <div className="flex items-center justify-between">
       <img src={url} alt={show.title} className="h-12 w-8" />
