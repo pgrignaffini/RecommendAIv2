@@ -3,26 +3,26 @@ import React from "react";
 import type { Recommendation } from "typings";
 
 type Props = {
-  show: Recommendation;
+  recommendation: Recommendation;
 };
 
-function RecommendationCard({ show }: Props) {
+function RecommendationCard({ recommendation }: Props) {
   return (
     <div
-      key={show.streaming_data.imdbID}
+      key={recommendation.streaming_data.imdbID}
       className="grid grid-cols-2 rounded-md bg-slate-200 p-3"
     >
       <div className="col-span-1 flex flex-col space-y-2">
         <img
-          src={show?.streaming_data.posterURLs?.[154]}
+          src={recommendation?.streaming_data.posterURLs?.[154]}
           className="h-64 w-64 object-contain "
-          alt={show?.title}
+          alt={recommendation?.title}
         />
-        <p>{show.title}</p>
+        <p>{recommendation.title}</p>
       </div>
       <div className="col-span-1 flex flex-col space-y-2">
-        <p>{show.explanation}</p>
-        <p>{show.streaming_data.overview}</p>
+        <p>{recommendation.explanation}</p>
+        <p>{recommendation.streaming_data.overview}</p>
       </div>
     </div>
   );

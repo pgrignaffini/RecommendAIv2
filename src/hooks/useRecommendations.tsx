@@ -2,8 +2,13 @@ import axios from "axios";
 import { useQuery } from "react-query";
 import type { Preference, Recommendation } from "typings";
 
+interface RecommendationsResponse {
+  recommendations: Recommendation[];
+}
+
 export const useRecommendations = (
   preferences: Preference[],
+  ignore: string[],
   genres?: string[],
   services?: string[]
 ) => {
@@ -25,18 +30,23 @@ export const useRecommendations = (
       preferences,
       genres,
       services,
+      ignore,
     });
 
-    return res?.data?.recommendations as Recommendation[];
+    return (res?.data as RecommendationsResponse)?.recommendations ?? [];
   };
 
   const {
     data: recommendations,
     refetch: getRecommendations,
-    isLoading: isLoadingRecommendations,
+    isLoading,
+    isFetching,
   } = useQuery("recommendations", fetchRecommendations, {
     enabled: false,
+    keepPreviousData: true,
   });
+
+  const isLoadingRecommendations = isLoading || isFetching;
 
   return { recommendations, getRecommendations, isLoadingRecommendations };
 };

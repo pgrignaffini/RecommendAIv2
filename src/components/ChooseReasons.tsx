@@ -1,12 +1,9 @@
 import React from "react";
-type Preference = {
-  title: string;
-  reason: string;
-};
+import type { Preference, Reasons } from "typings";
 
 type Props = {
   title: string;
-  reasons: object | undefined;
+  reasons: Reasons | undefined;
   setPreferences: React.Dispatch<React.SetStateAction<Preference[]>>;
 };
 

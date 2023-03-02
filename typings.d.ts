@@ -51,6 +51,10 @@ declare module "typings" {
     title: string;
   };
 
+  type Reasons = {
+    [title: string]: string[];
+  };
+
   type Preference = {
     title: string;
     reason: string;
