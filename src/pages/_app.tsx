@@ -5,6 +5,7 @@ import { QueryClient, QueryClientProvider } from "react-query";
 import { ReactQueryDevtools } from "react-query/devtools";
 import { api } from "~/utils/api";
 import dynamic from "next/dynamic";
+import { Toaster } from "react-hot-toast";
 
 import "~/styles/globals.css";
 
@@ -25,6 +26,12 @@ const MyApp: AppType<{ session: Session | null }> = ({
   return (
     <SessionProvider session={session}>
       <QueryClientProvider client={queryClient}>
+        <Toaster
+          position="top-right"
+          toastOptions={{
+            duration: 2000,
+          }}
+        />
         <main className="relative flex min-h-screen flex-col bg-[#072942] pb-10">
           <Header />
           <Component {...pageProps} />

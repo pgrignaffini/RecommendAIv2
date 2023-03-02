@@ -4,6 +4,7 @@ import type { TMDBShow } from "typings";
 import { useShowImages } from "~/hooks/useShowImages";
 import { PlusCircleIcon, CheckCircleIcon } from "@heroicons/react/24/outline";
 import { useBoolean, useLocalStorage } from "usehooks-ts";
+import toast from "react-hot-toast";
 
 type Props = {
   show: TMDBShow;
@@ -22,7 +23,8 @@ function SearchRow({ show }: Props) {
     <li
       onClick={() => {
         if (preferredShows.length >= 5) {
-          return;
+          toast.error("You can only add 5 shows");
+          return null;
         }
         setTrue();
         setPreferredShows((prev) => {
