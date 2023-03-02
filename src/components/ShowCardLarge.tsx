@@ -1,21 +1,18 @@
 /* eslint-disable @next/next/no-img-element */
 import React from "react";
 import type { TMDBShow } from "typings";
-import { useConfig } from "~/hooks/useConfig";
+import { useShowImages } from "~/hooks/useShowImages";
 
 type Props = {
   show: TMDBShow;
 };
 
 function ShowCardLarge({ show }: Props) {
-  const { config, baseUrl, posterSizes } = useConfig();
-  const url = config
-    ? `${baseUrl}${posterSizes[3] as string}${show?.poster_path}`
-    : "";
+  const { largePosterUrl } = useShowImages(show);
 
   return (
     <img
-      src={url}
+      src={largePosterUrl}
       className="h-[500px] w-auto object-contain"
       alt={show.title}
     />

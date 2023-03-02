@@ -3,15 +3,17 @@ import Link from "next/link";
 import React from "react";
 import type { TMDBShow } from "typings";
 import { useReadLocalStorage } from "usehooks-ts";
+import SearchBar from "./SearchBar";
 
 function Header() {
   const shows = useReadLocalStorage<TMDBShow[]>("shows");
 
   return (
-    <header className="sticky flex items-center justify-between p-4">
+    <header className="sticky z-10 flex items-center justify-between p-4">
       <Link href="/">
         <img src="/logo.png" alt="RecommendAI" className="h-10" />
       </Link>
+      <SearchBar placeholder="Search for a show..." />
       <div className="flex items-center space-x-4">
         <button className="rounded-lg border-2 py-2 px-4 text-lg text-white">
           Sign in

@@ -3,6 +3,7 @@ import React from "react";
 import type { TMDBShow } from "typings";
 import { useConfig } from "~/hooks/useConfig";
 import { useLocalStorage, useBoolean } from "usehooks-ts";
+import { useShowImages } from "~/hooks/useShowImages";
 
 type Props = {
   show: TMDBShow;
@@ -15,10 +16,7 @@ function ShowCard({ show }: Props) {
   );
   const isAdded = preferredShows?.some((s) => s?.id === show?.id);
   const { value: added, setTrue, setFalse } = useBoolean(isAdded);
-  const { config, baseUrl, posterSizes } = useConfig();
-  const url = config
-    ? `${baseUrl}${posterSizes[1] as string}${show?.poster_path}`
-    : "";
+  const { smallPosterUrl } = useShowImages(show);
 
   return (
     <div
@@ -27,7 +25,7 @@ function ShowCard({ show }: Props) {
         hover:scale-110`}
     >
       <img
-        src={url}
+        src={smallPosterUrl}
         className="h-full w-full object-contain"
         alt={show.title}
       />

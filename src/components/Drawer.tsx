@@ -2,7 +2,8 @@ import Link from "next/link";
 import React from "react";
 import type { TMDBShow } from "typings";
 import { useReadLocalStorage } from "usehooks-ts";
-import DrawerItem from "./DrawerItem";
+import DrawerItem from "~/components/DrawerItem";
+import { ArrowRightIcon } from "@heroicons/react/24/outline";
 
 function Drawer() {
   const preferredShows = useReadLocalStorage<TMDBShow[]>("shows");
@@ -17,20 +18,7 @@ function Drawer() {
         ))}
         <li className="btn w-full">
           <Link href="/reasons">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              strokeWidth={1.5}
-              stroke="currentColor"
-              className="h-6 w-6"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"
-              />
-            </svg>
+            <ArrowRightIcon className="h-6 w-6" />
           </Link>
         </li>
       </ul>
