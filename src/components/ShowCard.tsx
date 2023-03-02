@@ -6,10 +6,9 @@ import { useLocalStorage, useBoolean } from "usehooks-ts";
 
 type Props = {
   show: TMDBShow;
-  isLarge?: boolean;
 };
 
-function ShowCard({ show, isLarge = false }: Props) {
+function ShowCard({ show }: Props) {
   const [preferredShows, setPreferredShows] = useLocalStorage<TMDBShow[]>(
     "shows",
     []
@@ -18,17 +17,13 @@ function ShowCard({ show, isLarge = false }: Props) {
   const { value: added, setTrue, setFalse } = useBoolean(isAdded);
   const { config, baseUrl, posterSizes } = useConfig();
   const url = config
-    ? `${baseUrl}${
-        isLarge ? (posterSizes[3] as string) : (posterSizes[1] as string)
-      }${show?.poster_path}`
+    ? `${baseUrl}${posterSizes[1] as string}${show?.poster_path}`
     : "";
 
   return (
     <div
       key={show.id}
-      className={`group relative ${
-        isLarge ? "max-h-[500px]" : "max-h-[250px]"
-      } flex-none cursor-pointer transition duration-300 ease-in-out hover:-translate-y-2
+      className={`group relative max-h-[250px] flex-none cursor-pointer transition duration-300 ease-in-out hover:-translate-y-2
         hover:scale-110`}
     >
       <img
@@ -40,7 +35,7 @@ function ShowCard({ show, isLarge = false }: Props) {
         className="absolute inset-y-1/2 z-0 w-full opacity-0
         transition duration-300 ease-in-out group-hover:bg-transparent group-hover:opacity-80"
       >
-        {!isLarge && (
+        {preferredShows.length < 5 && (
           <div className="flex h-full items-center justify-center">
             {!added ? (
               <button

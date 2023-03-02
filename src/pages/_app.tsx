@@ -4,9 +4,11 @@ import { SessionProvider } from "next-auth/react";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { ReactQueryDevtools } from "react-query/devtools";
 import { api } from "~/utils/api";
+import dynamic from "next/dynamic";
 
 import "~/styles/globals.css";
-import Header from "~/components/Header";
+
+const Header = dynamic(() => import("~/components/Header"), { ssr: false });
 
 const MyApp: AppType<{ session: Session | null }> = ({
   Component,

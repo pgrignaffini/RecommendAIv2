@@ -9,6 +9,7 @@ const config = {
   },
   plugins: [
     require('tailwind-scrollbar-hide'),
+    require("daisyui"),
   ],
 };
 

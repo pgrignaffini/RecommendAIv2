@@ -1,22 +1,19 @@
 /* eslint-disable @next/next/no-img-element */
 import type { GetServerSideProps } from "next";
 import Head from "next/head";
-import Link from "next/link";
 import { signIn, signOut, useSession } from "next-auth/react";
 import { api } from "~/utils/api";
 import { defaultGenres, defaultServices } from "~/utils/constants";
-import { useState } from "react";
 import axios from "axios";
 import type { TMDBShow, TMDBResult } from "typings";
 import { getRandomInt } from "~/utils/helpers";
 import Banner from "~/components/Banner";
 import Row from "~/components/Row";
 import ShowCard from "~/components/ShowCard";
-import { useReadLocalStorage } from "usehooks-ts";
 import dynamic from "next/dynamic";
 
 // static import FAB to avoid SSR issues
-const FAB = dynamic(() => import("~/components/FAB"), { ssr: false });
+const Drawer = dynamic(() => import("~/components/Drawer"), { ssr: false });
 
 type Props = {
   trendingShows: TMDBShow[];
@@ -34,7 +31,6 @@ const Home = ({
   // const [servicesFilter, setServicesFilter] =
   //   useState<string[]>(defaultServices);
   // const [genresFilter, setGenresFilter] = useState<string[]>(defaultGenres);
-  const preferredShows = useReadLocalStorage<TMDBShow[]>("shows");
   // const hello = api.example.hello.useQuery({ text: "from tRPC" });
 
   return (
@@ -44,33 +40,36 @@ const Home = ({
         <meta name="description" content="Find your next favorite show" />
         <link rel="icon" href="/icon.png" />
       </Head>
-      <main>
-        <Banner bannerShow={bannerShow} />
-        <div className="space-y-4">
-          {trendingShows && (
-            <Row title="Trending Now">
-              {trendingShows.map((show) => (
-                <ShowCard key={show.id} show={show} />
-              ))}
-            </Row>
-          )}
-          {topRatedShows && (
-            <Row title="Top Rated">
-              {topRatedShows.map((show) => (
-                <ShowCard key={show.id} show={show} />
-              ))}
-            </Row>
-          )}
-          {popularShows && (
-            <Row title="Popular">
-              {popularShows?.map((show) => (
-                <ShowCard key={show.id} show={show} />
-              ))}
-            </Row>
-          )}
+      <div className="drawer drawer-end">
+        <input id="my-drawer-4" type="checkbox" className="drawer-toggle" />
+        <div className="drawer-content">
+          <Banner bannerShow={bannerShow} />
+          <div className="space-y-4">
+            {trendingShows && (
+              <Row title="Trending Now">
+                {trendingShows.map((show) => (
+                  <ShowCard key={show.id} show={show} />
+                ))}
+              </Row>
+            )}
+            {topRatedShows && (
+              <Row title="Top Rated">
+                {topRatedShows.map((show) => (
+                  <ShowCard key={show.id} show={show} />
+                ))}
+              </Row>
+            )}
+            {popularShows && (
+              <Row title="Popular">
+                {popularShows?.map((show) => (
+                  <ShowCard key={show.id} show={show} />
+                ))}
+              </Row>
+            )}
+          </div>
         </div>
-        <FAB shows={preferredShows as TMDBShow[]} />
-      </main>
+        <Drawer />
+      </div>
     </>
   );
 };

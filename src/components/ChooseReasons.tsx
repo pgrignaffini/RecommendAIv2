@@ -16,7 +16,7 @@ function ChooseReasons({ title, reasons, setPreferences }: Props) {
         (reasons[title] as string[])?.map((reason, index) => (
           <button
             key={index}
-            className={`w-full rounded-md bg-slate-100 p-3`}
+            className={`mx-auto w-3/4 rounded-md bg-slate-100 p-3`}
             onClick={() => {
               setSelectedReason(reason);
               setPreferences((prev) => {
