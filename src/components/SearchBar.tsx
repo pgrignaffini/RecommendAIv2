@@ -10,7 +10,10 @@ export default function SearchBar({ placeholder }: { placeholder: string }) {
   const [hide, setHide] = useState(true);
   const { shows, search, removeSearch } = useSearch(wordEntered);
 
-  useOnClickOutside(ref, () => setHide(true));
+  useOnClickOutside(ref, () => {
+    setHide(true);
+    setWordEntered("");
+  });
 
   return (
     <div
