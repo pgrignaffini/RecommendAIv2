@@ -11,17 +11,18 @@ function Header() {
   return (
     <header className="sticky z-10 flex items-center justify-between p-4">
       <Link href="/">
-        <img src="/logo.png" alt="RecommendAI" className="h-10" />
+        <div className=" flex items-center ">
+          <img src="/icon.png" alt="RecommendAI" className="h-10" />
+          <p className="hidden text-xl md:block">RecommendAI</p>
+        </div>
       </Link>
       <SearchBar placeholder="Search for a show..." />
-      <div className="flex items-center space-x-4">
-        <button className="rounded-lg border-2 py-2 px-4 text-lg text-white">
-          Sign in
-        </button>
-        <label htmlFor="my-drawer-4" className="btn-primary drawer-button btn">
-          {shows?.length ?? 0} shows
-        </label>
-      </div>
+      <label htmlFor="my-drawer-4" className="btn-primary drawer-button btn">
+        <div className="flex items-center space-x-2">
+          <p className="text-lg">{shows?.length ?? 0}</p>
+          <p className="hidden text-lg md:block">shows</p>
+        </div>
+      </label>
     </header>
   );
 }

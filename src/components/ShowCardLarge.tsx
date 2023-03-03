@@ -11,11 +11,9 @@ function ShowCardLarge({ show }: Props) {
   const { largePosterUrl } = useShowImages(show);
 
   return (
-    <img
-      src={largePosterUrl}
-      className="h-[500px] w-auto object-contain"
-      alt={show.title}
-    />
+    <figure>
+      <img src={largePosterUrl} alt={show.title} />
+    </figure>
   );
 }
 

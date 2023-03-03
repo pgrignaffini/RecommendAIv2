@@ -28,11 +28,18 @@ function Banner({ bannerShow }: Props) {
       className="relative h-[600px] w-full"
     >
       <div className="absolute bottom-0 h-80 w-full bg-transparent bg-gradient-to-b from-[rgba(7,41,66,0.03)] to-[#072942]" />
-      <div className="absolute inset-y-1/4 flex flex-col gap-4 px-10">
+      <div className="absolute mt-12 flex flex-col gap-4 px-10 md:inset-y-1/4">
         <div>
-          <h1 className="text-6xl font-bold text-white">{bannerShow?.title}</h1>
+          <h1 className="text-4xl font-bold text-white md:text-6xl">
+            {bannerShow?.title ?? bannerShow.name}
+          </h1>
         </div>
-        <p className="w-2/3 text-2xl text-white">{bannerShow?.overview}</p>
+        <p className="hidden w-2/3 text-2xl text-white md:block">
+          {bannerShow?.overview}
+        </p>
+        <p className="text-md w-4/5 text-white md:hidden">
+          {bannerShow?.overview.slice(0, 300) + "..."}
+        </p>
         {!added ? (
           <button
             className="w-fit rounded-md border-2 bg-[#072942] p-3 text-lg text-white"

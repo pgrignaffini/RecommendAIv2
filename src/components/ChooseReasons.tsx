@@ -45,10 +45,14 @@ function ChooseReasons({ title, reasons, setPreferences }: Props) {
         (reasons[title] as string[])?.map((reason, index) => (
           <button
             key={index}
-            className={`mx-auto w-3/4 rounded-md bg-slate-100 p-3`}
+            className={`btn ${
+              selectedReasons.includes(reason) ? "" : "btn-outline"
+            } btn-info`}
             onClick={() => toggleReasonSelection(reason)}
           >
-            {reason}
+            <p className="text-[0.7rem] md:text-[1rem] md:leading-5">
+              {reason}
+            </p>
             {selectedReasons.includes(reason) && " ✔"}
           </button>
         ))}

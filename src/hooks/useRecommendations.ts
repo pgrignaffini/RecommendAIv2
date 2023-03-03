@@ -1,4 +1,5 @@
 import axios from "axios";
+import toast from "react-hot-toast";
 import { useQuery } from "react-query";
 import type { Preference, Recommendation } from "typings";
 
@@ -54,6 +55,10 @@ export const useRecommendations = (
   } = useQuery("recommendations", fetchRecommendations, {
     enabled: false,
     keepPreviousData: true,
+    onError: (err) => {
+      toast.error("Failed to fetch recommendations");
+      console.error(err);
+    },
   });
 
   const isLoadingRecommendations = isLoading || isFetching;

@@ -15,7 +15,8 @@ function Reasons() {
   const [ignore, setIgnore] = React.useState<string[]>([]);
   const [preferences, setPreferences] = React.useState<Preference[]>([]);
   const [selectedGenres, setSelectedGenres] = React.useState<string[]>([]);
-  const [selectedServices, setSelectedServices] = React.useState<string[]>([]);
+  const [selectedServices, setSelectedServices] =
+    React.useState<string[]>(defaultServices);
   const { recommendations, getRecommendations, isLoadingRecommendations } =
     useRecommendations(preferences, ignore, selectedGenres, selectedServices);
 
@@ -58,13 +59,13 @@ function Reasons() {
 
   return (
     <div className="flex flex-col space-y-8 p-4">
-      <div className="mt-12 flex w-full justify-center space-x-4">
+      <div className="mx-auto space-y-4 xl:w-2/3">
         <PreferredShows setPreferences={setPreferences} />
       </div>
-      <div className="mx-auto grid w-full grid-cols-2 gap-10 px-12">
+      <div className="mx-auto flex w-full grid-cols-2 flex-col gap-10 px-2 xl:grid xl:px-12">
         <div className="col-span-1">
-          <h2>Select up to 5 genres:</h2>
-          <div className="grid grid-cols-3 gap-2 md:grid-cols-5 xl:grid-cols-7">
+          <h2 className="mb-2 text-lg text-white">Select up to 5 genres:</h2>
+          <div className="grid grid-cols-2 gap-2  md:grid-cols-4 xl:grid-cols-7">
             {defaultGenres.map((genre) => (
               <button
                 key={genre}
@@ -79,8 +80,10 @@ function Reasons() {
           </div>
         </div>
         <div className="col-span-1">
-          <h2>Select at least 3 services:</h2>
-          <div className="grid grid-cols-1 gap-2 md:grid-cols-2 xl:grid-cols-3">
+          <h2 className="mb-2 text-lg text-white ">
+            Select at least 3 services:
+          </h2>
+          <div className="grid grid-cols-2 gap-2  md:grid-cols-4 xl:grid-cols-3">
             {defaultServices.map((service) => (
               <button
                 key={service}
@@ -97,7 +100,7 @@ function Reasons() {
       </div>
       <div
         id="recommendations"
-        className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-4"
+        className="flex flex-col space-y-4 md:grid md:grid-cols-2 md:gap-4 lg:grid-cols-3"
       >
         {recommendations?.map((recommendation: Recommendation) => (
           <RecommendationCard
@@ -108,7 +111,8 @@ function Reasons() {
       </div>
 
       <button
-        className="mx-auto flex w-fit items-center space-x-4 rounded-full border-2 bg-[#072942] p-3 text-center text-lg text-white"
+        className="btn-primary btn mx-auto"
+        disabled={selectedServices.length < 3 || isLoadingRecommendations}
         onClick={() => {
           if (selectedGenres.length <= 5 && selectedServices.length >= 3) {
             getRecommendations()
