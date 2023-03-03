@@ -41,24 +41,18 @@ function ChooseReasons({ title, reasons, setPreferences }: Props) {
 
   return (
     <>
-      {reasons ? (
-        (reasons[title] as string[])?.map((reason, index) => (
-          <button
-            key={index}
-            className={`btn ${
-              selectedReasons.includes(reason) ? "" : "btn-outline"
-            } btn-info`}
-            onClick={() => toggleReasonSelection(reason)}
-          >
-            <p className="text-[0.7rem] md:text-[1rem] md:leading-5">
-              {reason}
-            </p>
-            {selectedReasons.includes(reason) && " ✔"}
-          </button>
-        ))
-      ) : (
-        <p className="text-lg">Could not load reasons</p>
-      )}
+      {(reasons?.[title] as string[])?.map((reason) => (
+        <button
+          key={reason}
+          className={`btn ${
+            selectedReasons.includes(reason) ? "" : "btn-outline"
+          } btn-info flex space-x-2`}
+          onClick={() => toggleReasonSelection(reason)}
+        >
+          <p className="text-[0.7rem] md:text-[1rem] md:leading-5">{reason}</p>
+          <p>{selectedReasons.includes(reason) && " ✔"}</p>
+        </button>
+      ))}
     </>
   );
 }
