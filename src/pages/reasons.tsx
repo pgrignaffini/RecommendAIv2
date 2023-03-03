@@ -5,6 +5,7 @@ import Spinner from "~/components/Spinner";
 import { useRecommendations } from "~/hooks/useRecommendations";
 import dynamic from "next/dynamic";
 import { defaultGenres, defaultServices } from "~/utils/constants";
+import toast from "react-hot-toast";
 
 const PreferredShows = dynamic(() => import("~/components/PreferredShows"), {
   ssr: false,
@@ -117,6 +118,10 @@ function Reasons() {
               .catch((err) => {
                 console.error(err);
               });
+          } else {
+            toast.error(
+              "Please select at least 3 services and up to 5 genres."
+            );
           }
         }}
       >

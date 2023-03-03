@@ -57,7 +57,7 @@ declare module "typings" {
 
   type Preference = {
     title: string;
-    reason: string;
+    reasons: string[];
   };
 
   type TMDBShow = {

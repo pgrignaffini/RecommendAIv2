@@ -28,11 +28,9 @@ function Drawer() {
             <DrawerItem show={show} />
           </li>
         ))}
-        <li className="btn w-full">
-          <Link href="/reasons">
-            <ArrowRightIcon className="h-6 w-6" />
-          </Link>
-        </li>
+        <Link href="/reasons" className="btn w-full">
+          <ArrowRightIcon className="h-6 w-6" />
+        </Link>
       </ul>
     </div>
   );

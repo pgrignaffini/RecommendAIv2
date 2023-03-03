@@ -6,7 +6,6 @@ import cors from "cors";
 const handler = nc()
   .use(cors())
   .post((req: NextApiRequest, res: NextApiResponse) => {
-    console.log(req.body);
     axios
       .post(`${process.env.API_BASE_URL}/recommendations/`, {
         ...req.body,

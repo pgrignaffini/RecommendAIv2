@@ -6,6 +6,11 @@ interface RecommendationsResponse {
   recommendations: Recommendation[];
 }
 
+interface PreferenceParam {
+  title: string;
+  reasons: string;
+}
+
 export const useRecommendations = (
   preferences: Preference[],
   ignore: string[],
@@ -26,8 +31,13 @@ export const useRecommendations = (
         "apple",
       ];
 
+    const preferencesParam: PreferenceParam[] = preferences.map((pref) => {
+      const reasons = pref.reasons.join("");
+      return { title: pref.title + " (movie)", reasons };
+    });
+
     const res = await axios.post("/api/recommendations", {
-      preferences,
+      preferences: preferencesParam,
       genres,
       services,
       ignore,

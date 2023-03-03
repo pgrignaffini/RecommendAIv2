@@ -1,5 +1,6 @@
 /* eslint-disable @next/next/no-img-element */
 import React from "react";
+import { toast } from "react-hot-toast";
 import type { TMDBShow } from "typings";
 import { useLocalStorage } from "usehooks-ts";
 import { useShowImages } from "~/hooks/useShowImages";
@@ -36,6 +37,10 @@ function Banner({ bannerShow }: Props) {
           <button
             className="w-fit rounded-md border-2 bg-[#072942] p-3 text-lg text-white"
             onClick={() => {
+              if (preferredShows.length >= 5) {
+                toast.error("You can only add 5 shows to your list");
+                return null;
+              }
               setAdded(true);
               setPreferredShows((prev) => {
                 if (prev) {
