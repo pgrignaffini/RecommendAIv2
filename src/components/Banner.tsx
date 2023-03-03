@@ -27,6 +27,7 @@ function Banner({ bannerShow }: Props) {
       }}
       className="relative h-[600px] w-full"
     >
+      <div className="absolute top-0 h-80 w-full bg-transparent bg-gradient-to-b from-[#072942] to-[rgba(7,41,66,0.03)] md:hidden" />
       <div className="absolute bottom-0 h-80 w-full bg-transparent bg-gradient-to-b from-[rgba(7,41,66,0.03)] to-[#072942]" />
       <div className="absolute mt-12 flex flex-col gap-4 px-10 md:inset-y-1/4">
         <div>
@@ -34,10 +35,10 @@ function Banner({ bannerShow }: Props) {
             {bannerShow?.title ?? bannerShow.name}
           </h1>
         </div>
-        <p className="hidden w-2/3 text-2xl text-white md:block">
+        <p className="hidden w-2/3 text-2xl text-white xl:block">
           {bannerShow?.overview}
         </p>
-        <p className="text-md w-4/5 text-white md:hidden">
+        <p className="text-md w-4/5 text-white md:text-lg xl:hidden">
           {bannerShow?.overview.slice(0, 300) + "..."}
         </p>
         {!added ? (
@@ -79,7 +80,7 @@ function Banner({ bannerShow }: Props) {
         )}
       </div>
       <img
-        className="absolute bottom-12 right-10 w-32"
+        className="absolute bottom-12 right-10 w-32 rounded-md"
         src={largePosterUrl}
         alt={bannerShow.title}
       />

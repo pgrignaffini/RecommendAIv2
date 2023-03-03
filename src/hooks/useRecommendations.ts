@@ -54,7 +54,6 @@ export const useRecommendations = (
     isFetching,
   } = useQuery("recommendations", fetchRecommendations, {
     enabled: false,
-    keepPreviousData: true,
     onError: (err) => {
       toast.error("Failed to fetch recommendations, please try again later.");
       console.error(err);
