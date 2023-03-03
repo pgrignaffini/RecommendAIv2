@@ -1,4 +1,26 @@
 declare module "typings" {
+  type StreamingService =
+    | "netflix"
+    | "prime"
+    | "disney"
+    | "hbo"
+    | "hulu"
+    | "peacock"
+    | "starz"
+    | "showtime"
+    | "apple"
+    | "mubi";
+
+  type StreamingInfo = {
+    [service in StreamingService]: {
+      [country: string]: {
+        link: string;
+        added: number;
+        leaving: number;
+      };
+    };
+  };
+
   type Show = {
     imdbID: string;
     tmdbID: string;
@@ -39,7 +61,7 @@ declare module "typings" {
     age: number;
     status: number;
     tagline: string;
-    streamingInfo: object;
+    streamingInfo: StreamingInfo;
     originalLanguage: string;
     content_type: string;
     runtime: string;

@@ -56,7 +56,7 @@ export const useRecommendations = (
     enabled: false,
     keepPreviousData: true,
     onError: (err) => {
-      toast.error("Failed to fetch recommendations");
+      toast.error("Failed to fetch recommendations, please try again later.");
       console.error(err);
     },
   });
