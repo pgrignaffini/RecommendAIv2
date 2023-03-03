@@ -49,8 +49,9 @@ function ChooseReasons({ title, reasons, setPreferences }: Props) {
           } btn-info flex space-x-2`}
           onClick={() => toggleReasonSelection(reason)}
         >
-          <p className="text-[0.7rem] md:text-[1rem] md:leading-5">{reason}</p>
-          <p>{selectedReasons.includes(reason) && " ✔"}</p>
+          <p className="text-[0.7rem] md:text-[1rem] md:leading-5">
+            {reason} {selectedReasons.includes(reason) && " ✔"}
+          </p>
         </button>
       ))}
     </>

@@ -74,7 +74,7 @@ function Reasons() {
                 } btn-success`}
                 onClick={() => handleGenreClick(genre)}
               >
-                {genre}
+                {genre} {selectedGenres.includes(genre) && " ✔"}
               </button>
             ))}
           </div>
@@ -92,7 +92,7 @@ function Reasons() {
                   selectedServices.includes(service) ? "" : "btn-outline"
                 } btn-info`}
               >
-                {service}
+                {service} {selectedServices.includes(service) && " ✔"}
               </button>
             ))}
           </div>
