@@ -100,7 +100,7 @@ function Reasons() {
       </div>
       <div
         id="recommendations"
-        className="flex flex-col space-y-4 md:grid md:grid-cols-2 md:gap-4 lg:grid-cols-3"
+        className="flex flex-col space-y-4 md:grid md:grid-cols-2 md:gap-4 lg:grid-cols-4"
       >
         {recommendations?.map((recommendation: Recommendation) => (
           <RecommendationCard

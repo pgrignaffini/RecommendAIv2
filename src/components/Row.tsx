@@ -8,7 +8,7 @@ type Props = {
 
 function Row({ title, children }: Props) {
   return (
-    <div className="ml-[20px] text-white">
+    <div className="ml-[5px] text-white md:ml-[20px]">
       <h2 className="mb-2 text-2xl">{title}</h2>
       <div className="flex space-x-3 overflow-y-hidden overflow-x-scroll scrollbar-hide">
         {children}

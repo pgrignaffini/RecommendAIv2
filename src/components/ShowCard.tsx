@@ -21,12 +21,12 @@ function ShowCard({ show }: Props) {
   return (
     <div
       key={show.id}
-      className={`group relative max-h-[250px] flex-none cursor-pointer transition duration-300 ease-in-out hover:-translate-y-2
+      className={`group relative  max-h-[250px] flex-none cursor-pointer  transition duration-300 ease-in-out hover:-translate-y-2
         hover:scale-110`}
     >
       <img
         src={smallPosterUrl}
-        className="h-full w-full object-contain"
+        className="h-full w-full rounded-md object-contain"
         alt={show.title}
       />
       <div

@@ -34,10 +34,14 @@ function SearchRow({ show }: Props) {
           return [show];
         });
       }}
-      className=" flex cursor-pointer flex-row items-center justify-between p-3 hover:bg-secondary hover:text-gray-900 hover:opacity-50"
+      className="flex cursor-pointer flex-row items-center justify-between p-1 hover:bg-secondary hover:text-gray-900 hover:opacity-50 md:p-3"
     >
-      <img alt="show poster" src={url} className="h-12 w-12 object-cover" />
-      <p className="text-lg">{show.title ?? show.name}</p>
+      <img
+        alt="show poster"
+        src={url}
+        className="h-8 w-8 rounded-full object-cover md:h-12 md:w-12 md:rounded-md"
+      />
+      <p className="ml-1 w-fit text-sm md:text-lg">{show.title ?? show.name}</p>
       {added ? (
         <CheckCircleIcon className="h-6 w-6" />
       ) : (
