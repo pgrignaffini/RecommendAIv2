@@ -6,7 +6,11 @@ import toast from "react-hot-toast";
 export const useReasons = (shows: TMDBShow[]) => {
   const fetchReasons = async (shows: TMDBShow[]) => {
     const titles: string[] = shows?.map(
-      (show) => show.title + " movie" ?? show.name + " movie"
+      (show) =>
+        show.title + " movie" ??
+        show.name + " movie" ??
+        show.original_name + " movie" ??
+        show.original_title + " movie"
     );
     const reasons = await axios.post("/api/reasons", titles);
     return reasons.data as Reasons;

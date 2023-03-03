@@ -112,7 +112,11 @@ function Reasons() {
 
       <button
         className="btn-primary btn mx-auto"
-        disabled={selectedServices.length < 3 || isLoadingRecommendations}
+        disabled={
+          selectedServices.length < 3 ||
+          isLoadingRecommendations ||
+          !recommendations
+        }
         onClick={() => {
           if (selectedGenres.length <= 5 && selectedServices.length >= 3) {
             getRecommendations()

@@ -30,7 +30,12 @@ function PreferredShows({ setPreferences }: Props) {
               </button>
             ) : (
               <ChooseReasons
-                title={show.title ?? show.name}
+                title={
+                  show.title ??
+                  show.name ??
+                  show.original_name ??
+                  show.original_title
+                }
                 reasons={reasons}
                 setPreferences={setPreferences}
               />

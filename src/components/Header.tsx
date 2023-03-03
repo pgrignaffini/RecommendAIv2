@@ -13,7 +13,7 @@ function Header() {
       <Link href="/">
         <div className=" flex items-center ">
           <img src="/icon.png" alt="RecommendAI" className="h-10" />
-          <p className="hidden text-xl md:block">RecommendAI</p>
+          <p className="hidden text-2xl text-white md:block">RecommendAI</p>
         </div>
       </Link>
       <SearchBar placeholder="Search for a show..." />

@@ -41,7 +41,7 @@ function ChooseReasons({ title, reasons, setPreferences }: Props) {
 
   return (
     <>
-      {reasons &&
+      {reasons ? (
         (reasons[title] as string[])?.map((reason, index) => (
           <button
             key={index}
@@ -55,7 +55,10 @@ function ChooseReasons({ title, reasons, setPreferences }: Props) {
             </p>
             {selectedReasons.includes(reason) && " ✔"}
           </button>
-        ))}
+        ))
+      ) : (
+        <p className="text-lg">Could not load reasons</p>
+      )}
     </>
   );
 }
