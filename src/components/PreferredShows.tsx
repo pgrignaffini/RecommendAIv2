@@ -1,4 +1,6 @@
+import { ArrowPathIcon } from "@heroicons/react/24/outline";
 import React from "react";
+import { toast } from "react-hot-toast";
 import type { TMDBShow, Preference } from "typings";
 import { useReadLocalStorage } from "usehooks-ts";
 import { useReasons } from "~/hooks/useReasons";
@@ -12,9 +14,16 @@ type Props = {
 
 function PreferredShows({ setPreferences }: Props) {
   const preferredShows = useReadLocalStorage<TMDBShow[]>("shows");
-  const { reasons, isLoadingReasons } = useReasons(
+  const { reasons, isLoadingReasons, refetchReasons } = useReasons(
     preferredShows as TMDBShow[]
   );
+
+  React.useEffect(() => {
+    refetchReasons().catch((error) => {
+      console.error(error);
+      toast.error("Something went wrong retrieving reasons.");
+    });
+  }, [preferredShows, refetchReasons]);
 
   return (
     <>
@@ -22,7 +31,24 @@ function PreferredShows({ setPreferences }: Props) {
         <div key={show.id} className="card bg-base-100 shadow-xl md:card-side">
           <ShowCardLarge show={show} />
           <div className="card-body">
-            <h2 className="card-title text-xl">{show.title ?? show.name}</h2>
+            <div className="flex items-center">
+              <h2 className="card-title w-full text-xl">
+                {show.title ?? show.name}
+              </h2>
+              <div className="tooltip" data-tip="Refetch reasons">
+                <button
+                  className="btn"
+                  onClick={() => {
+                    refetchReasons().catch((error) => {
+                      console.error(error);
+                      toast.error("Something went wrong retrieving reasons.");
+                    });
+                  }}
+                >
+                  <ArrowPathIcon className="h-6 w-6" />
+                </button>
+              </div>
+            </div>
             <p>Why did you like this show?</p>
             {isLoadingReasons ? (
               <button className="btn-primary btn mx-auto" disabled>

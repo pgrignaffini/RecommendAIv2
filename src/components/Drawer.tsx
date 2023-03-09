@@ -3,9 +3,17 @@ import React from "react";
 import type { TMDBShow } from "typings";
 import { useLocalStorage } from "usehooks-ts";
 import DrawerItem from "~/components/DrawerItem";
-import { ArrowRightIcon, TrashIcon } from "@heroicons/react/24/outline";
+import {
+  ArrowLeftIcon,
+  ArrowRightIcon,
+  TrashIcon,
+} from "@heroicons/react/24/outline";
+import { useRouter } from "next/router";
 
 function Drawer() {
+  const router = useRouter();
+  const path = router.asPath;
+
   const [preferredShows, setPreferredShows] = useLocalStorage<TMDBShow[]>(
     "shows",
     []
@@ -28,9 +36,15 @@ function Drawer() {
             <DrawerItem show={show} />
           </li>
         ))}
-        <Link href="/reasons" className="btn w-full">
-          <ArrowRightIcon className="h-6 w-6" />
-        </Link>
+        {path === "/" ? (
+          <Link href="/reasons" className="btn w-full">
+            <ArrowRightIcon className="h-6 w-6" />
+          </Link>
+        ) : (
+          <Link href="/" className="btn w-full">
+            <ArrowLeftIcon className="h-6 w-6" />
+          </Link>
+        )}
       </ul>
     </div>
   );

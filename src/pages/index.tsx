@@ -11,7 +11,6 @@ import ShowCard from "~/components/ShowCard";
 import dynamic from "next/dynamic";
 
 // static import to avoid SSR issues due to usage of localStorage
-const Drawer = dynamic(() => import("~/components/Drawer"), { ssr: false });
 const Banner = dynamic(() => import("~/components/Banner"), { ssr: false });
 
 type Props = {
@@ -34,35 +33,30 @@ const Home = ({
         <meta name="description" content="Find your next favorite show" />
         <link rel="icon" href="/icon.png" />
       </Head>
-      <div className="drawer drawer-end">
-        <input id="my-drawer-4" type="checkbox" className="drawer-toggle" />
-        <div className="drawer-content">
-          <Banner bannerShow={bannerShow} />
-          <div className="space-y-4">
-            {trendingShows && (
-              <Row title="Trending Now">
-                {trendingShows.map((show) => (
-                  <ShowCard key={show.id} show={show} />
-                ))}
-              </Row>
-            )}
-            {topRatedShows && (
-              <Row title="Top Rated">
-                {topRatedShows.map((show) => (
-                  <ShowCard key={show.id} show={show} />
-                ))}
-              </Row>
-            )}
-            {popularShows && (
-              <Row title="Popular">
-                {popularShows?.map((show) => (
-                  <ShowCard key={show.id} show={show} />
-                ))}
-              </Row>
-            )}
-          </div>
-        </div>
-        <Drawer />
+
+      <Banner bannerShow={bannerShow} />
+      <div className="space-y-4">
+        {trendingShows && (
+          <Row title="Trending Now">
+            {trendingShows.map((show) => (
+              <ShowCard key={show.id} show={show} />
+            ))}
+          </Row>
+        )}
+        {topRatedShows && (
+          <Row title="Top Rated">
+            {topRatedShows.map((show) => (
+              <ShowCard key={show.id} show={show} />
+            ))}
+          </Row>
+        )}
+        {popularShows && (
+          <Row title="Popular">
+            {popularShows?.map((show) => (
+              <ShowCard key={show.id} show={show} />
+            ))}
+          </Row>
+        )}
       </div>
     </>
   );

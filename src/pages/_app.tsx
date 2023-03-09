@@ -8,6 +8,7 @@ import dynamic from "next/dynamic";
 import { Toaster } from "react-hot-toast";
 
 import "~/styles/globals.css";
+const Drawer = dynamic(() => import("~/components/Drawer"), { ssr: false });
 
 const Header = dynamic(() => import("~/components/Header"), { ssr: false });
 
@@ -34,7 +35,13 @@ const MyApp: AppType<{ session: Session | null }> = ({
         />
         <main className="relative flex min-h-screen flex-col bg-[#072942] pb-10">
           <Header />
-          <Component {...pageProps} />
+          <div className="drawer drawer-end">
+            <input id="my-drawer-4" type="checkbox" className="drawer-toggle" />
+            <div className="drawer-content">
+              <Component {...pageProps} />
+            </div>
+            <Drawer />
+          </div>
         </main>
         <ReactQueryDevtools initialIsOpen={false} />
       </QueryClientProvider>

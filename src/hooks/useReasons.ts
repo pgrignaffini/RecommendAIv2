@@ -19,8 +19,10 @@ export const useReasons = (shows: TMDBShow[]) => {
 
   const {
     data: reasons,
-    isLoading: isLoadingReasons,
+    isLoading,
+    isFetching,
     isError,
+    refetch: refetchReasons,
   } = useQuery("reasons", () => fetchReasons(shows), {
     enabled: !!shows,
     onError: (err) => {
@@ -29,5 +31,7 @@ export const useReasons = (shows: TMDBShow[]) => {
     },
   });
 
-  return { reasons, isLoadingReasons, isError };
+  const isLoadingReasons = isLoading || isFetching;
+
+  return { reasons, isLoadingReasons, refetchReasons, isError };
 };
