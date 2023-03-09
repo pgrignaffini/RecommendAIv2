@@ -36,7 +36,7 @@ function Banner({ bannerShow }: Props) {
           </h1>
         </div>
         <p className="hidden w-2/3 text-2xl text-white xl:block">
-          {bannerShow?.overview}
+          {bannerShow?.overview.slice(0, 700) + "..."}
         </p>
         <p className="text-md w-4/5 text-white md:text-lg xl:hidden">
           {bannerShow?.overview.slice(0, 300) + "..."}
