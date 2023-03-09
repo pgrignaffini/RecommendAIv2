@@ -4,7 +4,11 @@ import RecommendationCard from "~/components/RecommendationCard";
 import Spinner from "~/components/Spinner";
 import { useRecommendations } from "~/hooks/useRecommendations";
 import dynamic from "next/dynamic";
-import { defaultGenres, defaultServices } from "~/utils/constants";
+import {
+  defaultGenres,
+  defaultServices,
+  defaultMediaTypes,
+} from "~/utils/constants";
 import toast from "react-hot-toast";
 
 const PreferredShows = dynamic(() => import("~/components/PreferredShows"), {
@@ -17,8 +21,16 @@ function Reasons() {
   const [selectedGenres, setSelectedGenres] = React.useState<string[]>([]);
   const [selectedServices, setSelectedServices] =
     React.useState<string[]>(defaultServices);
+  const [selectedMediaTypes, setSelectedMediaTypes] =
+    React.useState<string[]>(defaultMediaTypes);
   const { recommendations, getRecommendations, isLoadingRecommendations } =
-    useRecommendations(preferences, ignore, selectedGenres, selectedServices);
+    useRecommendations(
+      preferences,
+      ignore,
+      selectedGenres,
+      selectedServices,
+      selectedMediaTypes
+    );
 
   React.useEffect(() => {
     setIgnore(
@@ -57,13 +69,25 @@ function Reasons() {
     }
   };
 
+  const handleMediaTypeClick = (mediaType: string) => {
+    if (selectedMediaTypes.includes(mediaType)) {
+      setSelectedMediaTypes(
+        selectedMediaTypes.filter(
+          (selectedMediaType) => selectedMediaType !== mediaType
+        )
+      );
+    } else {
+      setSelectedMediaTypes([...selectedMediaTypes, mediaType]);
+    }
+  };
+
   return (
     <div className="flex flex-col space-y-8 p-4">
       <div className="mx-auto space-y-4 xl:w-2/3">
         <PreferredShows setPreferences={setPreferences} />
       </div>
-      <div className="mx-auto flex w-full grid-cols-2 flex-col gap-10 px-2 xl:grid xl:px-12">
-        <div className="col-span-1">
+      <div className="mx-auto flex w-full grid-cols-7 flex-col gap-10 px-2 xl:grid xl:px-12">
+        <div className="col-span-3">
           <h2 className="mb-2 text-lg text-white">Select up to 5 genres:</h2>
           <div className="grid grid-cols-2 gap-2  md:grid-cols-4 xl:grid-cols-7">
             {defaultGenres.map((genre) => (
@@ -79,7 +103,7 @@ function Reasons() {
             ))}
           </div>
         </div>
-        <div className="col-span-1">
+        <div className="col-span-3">
           <h2 className="mb-2 text-lg text-white ">
             Select at least 3 services:
           </h2>
@@ -97,7 +121,26 @@ function Reasons() {
             ))}
           </div>
         </div>
+        <div className="col-span-1">
+          <h2 className="mb-2 text-lg text-white ">
+            Select type of recommendation:
+          </h2>
+          <div className="flex flex-col space-y-4">
+            {defaultMediaTypes.map((mediaType) => (
+              <button
+                key={mediaType}
+                onClick={() => handleMediaTypeClick(mediaType)}
+                className={`btn ${
+                  selectedMediaTypes.includes(mediaType) ? "" : "btn-outline"
+                } btn-warning`}
+              >
+                {mediaType} {selectedMediaTypes.includes(mediaType) && " ✔"}
+              </button>
+            ))}
+          </div>
+        </div>
       </div>
+
       <div
         id="recommendations"
         className="flex flex-col space-y-4 md:grid md:grid-cols-2 md:gap-4 lg:grid-cols-4"

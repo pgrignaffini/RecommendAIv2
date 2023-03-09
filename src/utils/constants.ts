@@ -40,3 +40,5 @@ export const defaultGenres = [
   "Mystery",
   "Documentary",
 ];
+
+export const defaultMediaTypes = ["movies", "series"];
