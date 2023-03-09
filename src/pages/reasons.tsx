@@ -87,7 +87,7 @@ function Reasons() {
         <PreferredShows setPreferences={setPreferences} />
       </div>
       <div className="mx-auto flex w-full grid-cols-7 flex-col gap-10 px-2 xl:grid xl:px-12">
-        <div className="col-span-3">
+        <div className="col-span-4">
           <h2 className="mb-2 text-lg text-white">Select up to 5 genres:</h2>
           <div className="grid grid-cols-2 gap-2  md:grid-cols-4 xl:grid-cols-7">
             {defaultGenres.map((genre) => (
@@ -103,7 +103,7 @@ function Reasons() {
             ))}
           </div>
         </div>
-        <div className="col-span-3">
+        <div className="col-span-2">
           <h2 className="mb-2 text-lg text-white ">
             Select at least 3 services:
           </h2>
