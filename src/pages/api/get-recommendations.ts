@@ -5,19 +5,17 @@ import cors from "cors";
 
 const handler = nc()
   .use(cors())
-  .post((req: NextApiRequest, res: NextApiResponse) => {
+  .get((req: NextApiRequest, res: NextApiResponse) => {
+    const { info_hash } = req.query;
     axios
-      .post(
-        `${process.env.API_BASE_URL}/reasons/`,
-        {
-          ...req.body,
+      .get(`${process.env.API_BASE_URL}/get_recommendations`, {
+        params: {
+          info_hash,
         },
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      )
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
       .then((response) => {
         res.status(200).json(response.data);
       })

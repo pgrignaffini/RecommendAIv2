@@ -1,8 +1,18 @@
-import React from "react";
-import type { Preference, Recommendation } from "typings";
+import React, { useState } from "react";
+import type {
+  Preference,
+  ProgressResponse,
+  Recommendation,
+  HashResponse,
+  RecommendationsResponse,
+} from "typings";
 import RecommendationCard from "~/components/RecommendationCard";
 import Spinner from "~/components/Spinner";
-import { useRecommendations } from "~/hooks/useRecommendations";
+import {
+  runRecommendations,
+  checkProgress,
+  getRecommendations,
+} from "~/utils/requests";
 import dynamic from "next/dynamic";
 import {
   defaultGenres,
@@ -10,6 +20,7 @@ import {
   defaultMediaTypes,
 } from "~/utils/constants";
 import toast from "react-hot-toast";
+import { useQuery } from "react-query";
 
 const PreferredShows = dynamic(() => import("~/components/PreferredShows"), {
   ssr: false,
@@ -23,20 +34,37 @@ function Reasons() {
     React.useState<string[]>(defaultServices);
   const [selectedMediaTypes, setSelectedMediaTypes] =
     React.useState<string[]>(defaultMediaTypes);
-  const { recommendations, getRecommendations, isLoadingRecommendations } =
-    useRecommendations(
-      preferences,
-      ignore,
-      selectedGenres,
-      selectedServices,
-      selectedMediaTypes
-    );
+  const [infoHash, setInfoHash] = useState<HashResponse | undefined>(undefined);
+  const [progressData, setProgressData] = useState<
+    ProgressResponse | undefined
+  >(undefined);
+  const [recommendations, setRecommendations] = useState<Recommendation[]>([]);
+  const isLoadingRecommendations =
+    progressData && progressData?.progress >= 0 && progressData?.progress < 1;
 
-  React.useEffect(() => {
-    setIgnore(
-      recommendations?.map((recommendation) => recommendation?.title) ?? []
-    );
-  }, [recommendations]);
+  useQuery("progress", () => checkProgress(infoHash?.info_hash), {
+    enabled: !!infoHash,
+    refetchInterval: 5000,
+    onSuccess: (data) => {
+      setProgressData(data);
+    },
+  });
+
+  useQuery("recommendations", () => getRecommendations(infoHash), {
+    enabled: !!infoHash && !!progressData && progressData?.progress > 0,
+    onSuccess: (data: RecommendationsResponse) => {
+      setRecommendations(data?.recommendations);
+      if ((progressData?.progress as number) >= 1) {
+        setInfoHash(undefined);
+        setProgressData(undefined);
+      }
+
+      setIgnore(
+        data?.recommendations.map((recommendation) => recommendation?.title) ??
+          []
+      );
+    },
+  });
 
   const scrollToRecommendations = () => {
     const element = document.getElementById("recommendations");
@@ -155,12 +183,18 @@ function Reasons() {
 
       <button
         className="btn-primary btn mx-auto"
-        disabled={selectedServices.length < 3 || isLoadingRecommendations}
+        disabled={selectedServices.length < 3}
         onClick={() => {
           if (selectedGenres.length <= 5 && selectedServices.length >= 3) {
-            getRecommendations()
-              .then(() => {
-                scrollToRecommendations();
+            runRecommendations({
+              preferences,
+              ignore,
+              genres: selectedGenres,
+              services: selectedServices,
+              mediaTypes: selectedMediaTypes,
+            })
+              .then((infoHash: HashResponse) => {
+                setInfoHash(infoHash);
               })
               .catch((err) => {
                 console.error(err);
@@ -175,6 +209,11 @@ function Reasons() {
         Load{isLoadingRecommendations && "ing "} {recommendations && "new "}
         recommendations {isLoadingRecommendations && <Spinner />}
       </button>
+      <progress
+        className="progress progress-secondary mx-auto w-56"
+        value={progressData?.progress ?? 0}
+        max="1"
+      ></progress>
     </div>
   );
 }

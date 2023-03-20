@@ -85,6 +85,29 @@ export const getServerSideProps: GetServerSideProps = async () => {
 
   const popularShows = popular.data as TMDBResult;
 
+  // const actionMovies = await axios.get(
+  //   `${process.env.TMDB_API_URL}/discover/movie?api_key=${process.env.API_KEY}`,
+  //   {
+  //     params: {
+  //       with_genres: 28,
+  //     },
+  //   }
+  // );
+  // console.log(actionMovies.data);
+  // console.log(actionMovies.data.results.length);
+
+  // const actionShows = await axios.get(
+  //   `${process.env.TMDB_API_URL}/discover/tv?api_key=${process.env.API_KEY}`,
+  //   {
+  //     params: {
+  //       with_genres: 28,
+  //     },
+  //   }
+  // );
+
+  // console.log(actionShows.data);
+  // console.log(actionShows.data.results.length);
+
   return {
     props: {
       trendingShows: trendingShows.results ?? [],

@@ -6,10 +6,8 @@ import cors from "cors";
 const handler = nc()
   .use(cors())
   .post((req: NextApiRequest, res: NextApiResponse) => {
-    const { media_type } = req.query;
-    const filter = media_type ? `?media_type=${media_type as string}` : "";
     axios
-      .post(`${process.env.API_BASE_URL}/recommendations/${filter}`, {
+      .post(`${process.env.API_BASE_URL}/run_recommendations`, {
         ...req.body,
         headers: {
           "Content-Type": "application/json",

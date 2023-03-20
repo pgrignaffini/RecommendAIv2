@@ -120,4 +120,29 @@ declare module "typings" {
     };
     change_keys: string[];
   };
+
+  interface RecommendationsResponse {
+    recommendations: Recommendation[];
+  }
+
+  interface HashResponse {
+    info_hash: string;
+  }
+
+  interface ProgressResponse {
+    progress: number;
+  }
+
+  interface PreferenceParam {
+    title: string;
+    reasons: string;
+  }
+
+  interface RequestProps {
+    preferences: Preference[];
+    ignore: string[];
+    genres?: string[];
+    services?: string[];
+    mediaTypes?: string[];
+  }
 }

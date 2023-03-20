@@ -13,7 +13,7 @@ export const useReasons = (shows: TMDBShow[]) => {
         show.original_title + " movie"
       );
     });
-    const reasons = await axios.post("/api/reasons", titles);
+    const reasons = await axios.post("/api/reasons", { titles });
     return reasons.data as Reasons;
   };
 
