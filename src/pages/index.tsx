@@ -28,7 +28,7 @@ const Home = ({
   bannerShow,
 }: Props) => {
   return (
-    <>
+    <div>
       <Head>
         <title>RecommendAI</title>
         <meta name="description" content="Find your next favorite show" />
@@ -59,7 +59,7 @@ const Home = ({
           )}
         </Row>
       </div>
-    </>
+    </div>
   );
 };
 

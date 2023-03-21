@@ -169,18 +169,6 @@ function Reasons() {
         </div>
       </div>
 
-      <div
-        id="recommendations"
-        className="flex flex-col space-y-4 md:grid md:grid-cols-2 md:gap-4 lg:grid-cols-4"
-      >
-        {recommendations?.map((recommendation: Recommendation) => (
-          <RecommendationCard
-            key={recommendation.streaming_data.imdbID}
-            recommendation={recommendation}
-          />
-        ))}
-      </div>
-
       <button
         className="btn-primary btn mx-auto"
         disabled={selectedServices.length < 3}
@@ -206,14 +194,26 @@ function Reasons() {
           }
         }}
       >
-        Load{isLoadingRecommendations && "ing "} {recommendations && "new "}
-        recommendations {isLoadingRecommendations && <Spinner />}
+        Load{isLoadingRecommendations && "ing"} recommendations{" "}
+        {isLoadingRecommendations && <Spinner />}
       </button>
       <progress
         className="progress progress-secondary mx-auto w-56"
         value={progressData?.progress ?? 0}
         max="1"
       ></progress>
+
+      <div
+        id="recommendations"
+        className="flex flex-col space-y-4 md:grid md:grid-cols-2 md:gap-4 lg:grid-cols-4"
+      >
+        {recommendations?.map((recommendation: Recommendation) => (
+          <RecommendationCard
+            key={recommendation.streaming_data.imdbID}
+            recommendation={recommendation}
+          />
+        ))}
+      </div>
     </div>
   );
 }

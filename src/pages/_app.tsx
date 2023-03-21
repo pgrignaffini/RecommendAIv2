@@ -10,7 +10,6 @@ import "~/styles/globals.css";
 import { usePageLoading } from "~/hooks/usePageLoading";
 import Spinner from "~/components/Spinner";
 
-const Drawer = dynamic(() => import("~/components/Drawer"), { ssr: false });
 const Header = dynamic(() => import("~/components/Header"), { ssr: false });
 
 const queryClient = new QueryClient({
@@ -44,17 +43,7 @@ const MyApp: AppType<{ session: Session | null }> = ({
                 <Spinner />
               </div>
             ) : (
-              <div className="drawer drawer-end">
-                <input
-                  id="my-drawer-4"
-                  type="checkbox"
-                  className="drawer-toggle"
-                />
-                <div className="drawer-content">
-                  <Component {...pageProps} />
-                </div>
-                <Drawer />
-              </div>
+              <Component {...pageProps} />
             )}
           </main>
           <ReactQueryDevtools initialIsOpen={false} />
