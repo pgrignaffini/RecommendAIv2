@@ -16,8 +16,7 @@ export const runRecommendations = async ({
   mediaTypes,
 }: RequestProps) => {
   let mediaType = undefined;
-  if (!genres?.length)
-    genres = ["Drama", "Action", "Science Fiction", "Mystery", "Thriller"];
+  if (!genres?.length) genres = [];
   if (!services?.length)
     services = [
       "netflix",

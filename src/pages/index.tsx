@@ -15,16 +15,20 @@ import ShowCardSkeleton from "~/components/skeletons/ShowCardSkeleton";
 const Banner = dynamic(() => import("~/components/Banner"), { ssr: false });
 
 type Props = {
-  trendingShows: TMDBShow[];
-  topRatedShows: TMDBShow[];
-  popularShows: TMDBShow[];
+  comedyShows: TMDBShow[];
+  actionShows: TMDBShow[];
+  documentaryShows: TMDBShow[];
+  dramaShows: TMDBShow[];
+  crimeShows: TMDBShow[];
   bannerShow: TMDBShow;
 };
 
 const Home = ({
-  trendingShows,
-  topRatedShows,
-  popularShows,
+  actionShows,
+  comedyShows,
+  documentaryShows,
+  crimeShows,
+  dramaShows,
   bannerShow,
 }: Props) => {
   return (
@@ -37,23 +41,39 @@ const Home = ({
 
       <Banner bannerShow={bannerShow} />
       <div className="space-y-4">
-        <Row title="Trending Now">
-          {trendingShows ? (
-            trendingShows.map((show) => <ShowCard key={show.id} show={show} />)
+        <Row title="Comedies">
+          {comedyShows ? (
+            comedyShows.map((show) => <ShowCard key={show.id} show={show} />)
           ) : (
             <ShowCardSkeleton cards={10} />
           )}
         </Row>
-        <Row title="Top Rated">
-          {topRatedShows ? (
-            topRatedShows.map((show) => <ShowCard key={show.id} show={show} />)
+        <Row title="Action">
+          {actionShows ? (
+            actionShows.map((show) => <ShowCard key={show.id} show={show} />)
           ) : (
             <ShowCardSkeleton cards={10} />
           )}
         </Row>
-        <Row title="Popular">
-          {popularShows ? (
-            popularShows.map((show) => <ShowCard key={show.id} show={show} />)
+        <Row title="Documentaries">
+          {documentaryShows ? (
+            documentaryShows.map((show) => (
+              <ShowCard key={show.id} show={show} />
+            ))
+          ) : (
+            <ShowCardSkeleton cards={10} />
+          )}
+        </Row>
+        <Row title="Dramas">
+          {dramaShows ? (
+            dramaShows.map((show) => <ShowCard key={show.id} show={show} />)
+          ) : (
+            <ShowCardSkeleton cards={10} />
+          )}
+        </Row>
+        <Row title="Crime">
+          {crimeShows ? (
+            crimeShows.map((show) => <ShowCard key={show.id} show={show} />)
           ) : (
             <ShowCardSkeleton cards={10} />
           )}
@@ -67,54 +87,133 @@ export default Home;
 
 // get shows on server side
 export const getServerSideProps: GetServerSideProps = async () => {
-  const trending = await axios.get(
-    `${process.env.TMDB_API_URL}/trending/all/day?api_key=${process.env.API_KEY}`
+  const actionMoviesRes = await axios.get(
+    `${process.env.TMDB_API_URL}/discover/movie?api_key=${process.env.API_KEY}`,
+    {
+      params: {
+        with_genres: 28,
+      },
+    }
   );
 
-  const trendingShows = trending.data as TMDBResult;
+  const actionMovies = actionMoviesRes.data as TMDBResult;
 
-  const topRated = await axios.get(
-    `${process.env.TMDB_API_URL}/movie/top_rated?api_key=${process.env.API_KEY}`
+  const actionShowsRes = await axios.get(
+    `${process.env.TMDB_API_URL}/discover/tv?api_key=${process.env.API_KEY}`,
+    {
+      params: {
+        with_genres: 10759,
+      },
+    }
   );
 
-  const topRatedShows = topRated.data as TMDBResult;
+  const actionShows = actionShowsRes.data as TMDBResult;
+  const actions = (actionMovies?.results).concat(actionShows?.results);
 
-  const popular = await axios.get(
-    `${process.env.TMDB_API_URL}/movie/popular?api_key=${process.env.API_KEY}`
+  const comedyMoviesRes = await axios.get(
+    `${process.env.TMDB_API_URL}/discover/movie?api_key=${process.env.API_KEY}`,
+    {
+      params: {
+        with_genres: 35,
+      },
+    }
   );
 
-  const popularShows = popular.data as TMDBResult;
+  const comedyMovies = comedyMoviesRes.data as TMDBResult;
 
-  // const actionMovies = await axios.get(
-  //   `${process.env.TMDB_API_URL}/discover/movie?api_key=${process.env.API_KEY}`,
-  //   {
-  //     params: {
-  //       with_genres: 28,
-  //     },
-  //   }
-  // );
-  // console.log(actionMovies.data);
-  // console.log(actionMovies.data.results.length);
+  const comedyShowsRes = await axios.get(
+    `${process.env.TMDB_API_URL}/discover/tv?api_key=${process.env.API_KEY}`,
+    {
+      params: {
+        with_genres: 35,
+      },
+    }
+  );
 
-  // const actionShows = await axios.get(
-  //   `${process.env.TMDB_API_URL}/discover/tv?api_key=${process.env.API_KEY}`,
-  //   {
-  //     params: {
-  //       with_genres: 28,
-  //     },
-  //   }
-  // );
+  const comedyShows = comedyShowsRes.data as TMDBResult;
+  const comedies = (comedyMovies?.results).concat(comedyShows?.results);
 
-  // console.log(actionShows.data);
-  // console.log(actionShows.data.results.length);
+  const documentaryMoviesRes = await axios.get(
+    `${process.env.TMDB_API_URL}/discover/movie?api_key=${process.env.API_KEY}`,
+    {
+      params: {
+        with_genres: 99,
+      },
+    }
+  );
+
+  const documentaryMovies = documentaryMoviesRes.data as TMDBResult;
+
+  const documentaryShowsRes = await axios.get(
+    `${process.env.TMDB_API_URL}/discover/tv?api_key=${process.env.API_KEY}`,
+    {
+      params: {
+        with_genres: 99,
+      },
+    }
+  );
+
+  const documentaryShows = documentaryShowsRes.data as TMDBResult;
+  const documentaries = (documentaryMovies?.results).concat(
+    documentaryShows?.results
+  );
+
+  const dramaMoviesRes = await axios.get(
+    `${process.env.TMDB_API_URL}/discover/movie?api_key=${process.env.API_KEY}`,
+    {
+      params: {
+        with_genres: 18,
+      },
+    }
+  );
+
+  const dramaMovies = dramaMoviesRes.data as TMDBResult;
+
+  const dramaShowsRes = await axios.get(
+    `${process.env.TMDB_API_URL}/discover/tv?api_key=${process.env.API_KEY}`,
+    {
+      params: {
+        with_genres: 18,
+      },
+    }
+  );
+
+  const dramaShows = dramaShowsRes.data as TMDBResult;
+
+  const dramas = (dramaMovies?.results).concat(dramaShows?.results);
+
+  const crimeMoviesRes = await axios.get(
+    `${process.env.TMDB_API_URL}/discover/movie?api_key=${process.env.API_KEY}`,
+    {
+      params: {
+        with_genres: 80,
+      },
+    }
+  );
+
+  const crimeMovies = crimeMoviesRes.data as TMDBResult;
+
+  const crimeShowsRes = await axios.get(
+    `${process.env.TMDB_API_URL}/discover/tv?api_key=${process.env.API_KEY}`,
+    {
+      params: {
+        with_genres: 80,
+      },
+    }
+  );
+
+  const crimeShows = crimeShowsRes.data as TMDBResult;
+
+  const crimes = (crimeMovies?.results).concat(crimeShows?.results);
 
   return {
     props: {
-      trendingShows: trendingShows.results ?? [],
-      topRatedShows: topRatedShows.results ?? [],
-      popularShows: popularShows.results ?? [],
-      bannerShow:
-        trendingShows.results[getRandomInt(0, trendingShows.results.length)],
+      actionShows: actions ?? [],
+      comedyShows: comedies ?? [],
+      documentaryShows: documentaries ?? [],
+      crimeShows: crimes ?? [],
+      dramaShows: dramas ?? [],
+      bannerShow: comedies[getRandomInt(0, comedies.length)],
     },
   };
 };
