@@ -66,12 +66,12 @@ function Reasons() {
     },
   });
 
-  const scrollToRecommendations = () => {
-    const element = document.getElementById("recommendations");
-    if (element) {
-      element.scrollIntoView({ behavior: "smooth" });
-    }
-  };
+  // const scrollToRecommendations = () => {
+  //   const element = document.getElementById("recommendations");
+  //   if (element) {
+  //     element.scrollIntoView({ behavior: "smooth" });
+  //   }
+  // };
 
   const handleGenreClick = (genre: string) => {
     if (selectedGenres.includes(genre)) {
